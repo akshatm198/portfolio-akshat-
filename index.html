@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Akshat Mishra — Futuristic Portfolio</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!-- External libs: particles.js, typed.js, vanilla-tilt, emailjs -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.7.2/dist/vanilla-tilt.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+
+  <style>
+    :root{
+      --bg1:#071029;
+      --bg2:#061022;
+      --neon1:#00f6ff;
+      --neon2:#6c63ff;
+      --accent:#66f;
+      --glass: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.03);
+      --txt:#eaf6ff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family: 'Rajdhani', system-ui, sans-serif;background: linear-gradient(120deg,var(--bg1),#051028 40%, #0b0b1a);color:var(--txt);overflow-x:hidden}
+    /* particle canvas */
+    #particles-js{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+    header{
+      position:fixed;left:0;right:0;top:0;z-index:50;padding:18px 6%;
+      display:flex;align-items:center;justify-content:space-between;
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02));
+      backdrop-filter: blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);
+    }
+    .logo{font-family:'Orbitron';font-weight:700;color:var(--neon1);letter-spacing:1px;text-decoration:none}
+    nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0}
+    nav a{color:var(--txt);text-decoration:none;font-weight:600;opacity:0.9}
+    nav a:hover{color:var(--neon2);text-shadow:0 0 10px rgba(108,99,255,0.12)}
+
+    /* Hero */
+    .hero{
+      min-height:100vh;display:flex;align-items:center;padding:80px 6%;position:relative;z-index:10;
+    }
+    .hero-left{flex:1;max-width:720px}
+    .hero-right{flex:0 0 420px;display:flex;justify-content:center;align-items:center}
+    h1{font-size:44px;margin:0 0 12px 0;font-family:'Orbitron'}
+    h1 .name{color:var(--neon2);text-shadow:0 0 18px rgba(108,99,255,0.18)}
+    .typed{color:var(--neon1);display:inline-block;font-weight:700}
+    p.lead{color:rgba(234,246,255,0.8);line-height:1.5;margin:10px 0 20px}
+
+    .cta{display:inline-flex;gap:10px}
+    .btn{
+      border-radius:999px;padding:10px 18px;border:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      color:var(--txt);cursor:pointer;font-weight:700;backdrop-filter: blur(6px);
+      box-shadow: 0 6px 30px rgba(108,99,255,0.06);
+    }
+    .btn.primary{border-color:var(--neon1);box-shadow:0 8px 40px rgba(0,246,255,0.06)}
+    .avatar{
+      width:350px;height:350px;border-radius:18px;padding:10px;background:linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 40px rgba(108,99,255,0.06);
+      border:1px solid rgba(255,255,255,0.03);
+      transform-style:preserve-3d;
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover;border-radius:10px;display:block;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.6))}
+
+    /* Sections */
+    section{padding:90px 6%;position:relative;z-index:5}
+    .section-title{font-size:28px;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+    .glass{background:linear-gradient(180deg,var(--glass),var(--glass-2));border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 40px rgba(2,6,23,0.6)}
+
+    /* About/resume */
+    .about-grid{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:start}
+    .resume-card{padding:18px;border-radius:12px}
+    .resume-card h3{margin:0 0 8px;color:var(--neon2)}
+    .resume-meta{font-size:14px;color:rgba(234,246,255,0.8);margin-bottom:8px}
+    .resume-text{font-size:15px;line-height:1.55;color:rgba(234,246,255,0.9)}
+    .projects-list{display:grid;gap:16px}
+
+    /* Project cards grid */
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:18px}
+    .card{
+      border-radius:14px;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      transform-style:preserve-3d;border:1px solid rgba(255,255,255,0.04);cursor:pointer;
+      transition: transform 250ms ease, box-shadow 250ms ease;
+      perspective: 1200px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover{transform: translateY(-12px) rotateX(6deg) rotateY(-4deg); box-shadow: 0 25px 60px rgba(2,6,23,0.6)}
+    .card .title{font-weight:700;color:var(--neon1);margin-bottom:8px}
+    .card .meta{font-size:13px;color:rgba(234,246,255,0.75)}
+    .card .tags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+    .tag{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(108,99,255,0.12);color:var(--neon2)}
+    
+    /* Card pop content */
+    .card-pop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(0,246,255,0.1), rgba(108,99,255,0.1));
+      backdrop-filter: blur(10px);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+    .card:hover .card-pop {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .card-pop-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--neon1);
+      margin-bottom: 10px;
+    }
+    .card-pop-desc {
+      font-size: 14px;
+      color: rgba(234,246,255,0.9);
+      line-height: 1.4;
+    }
+    .card-pop-tech {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .card-pop-tech span {
+      font-size: 11px;
+      padding: 4px 8px;
+      background: rgba(108,99,255,0.2);
+      border-radius: 12px;
+      color: var(--neon2);
+    }
+
+    /* hover pop small preview */
+    .preview-pop{position:absolute;pointer-events:none;padding:12px 14px;border-radius:10px;background:linear-gradient(180deg,#001428cc,#001428aa);border:1px solid rgba(0,246,255,0.08);transform:translate(-50%,-120%);white-space:nowrap;font-size:13px;display:none;z-index:60}
+
+    /* modal popup on left click */
+    .overlay{position:fixed;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.7));display:none;align-items:center;justify-content:center;z-index:100}
+    .overlay.active{display:flex}
+    .modal{
+      width:min(1100px,94%);height:min(80vh,920px);border-radius:12px;background:linear-gradient(90deg,#ffffff06,#ffffff03);
+      display:flex;gap:18px;padding:20px;border:1px solid rgba(255,255,255,0.04);overflow:hidden;position:relative;
+      box-shadow: 0 40px 120px rgba(2,6,23,0.75);
+    }
+    .modal-left{flex:1;padding:12px;overflow:auto}
+    .modal-right{width:420px;padding:12px;border-left:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
+    .modal .close{position:absolute;right:12px;top:12px;cursor:pointer;font-size:18px;color:var(--neon1)}
+
+    /* contact & form */
+    .contact-grid{display:grid;grid-template-columns:1fr 420px;gap:20px}
+    input,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--txt);outline:none}
+    .submit{display:inline-block;padding:10px 18px;border-radius:999px;border:1px solid var(--neon1);background:transparent;color:var(--neon1);cursor:pointer;font-weight:700}
+
+    /* small responsive */
+    @media (max-width:900px){
+      .about-grid,.contact-grid{grid-template-columns:1fr}
+      .hero-right{display:none}
+    }
+
+    /* pop animation for modal appear */
+    .modal.anim-pop{animation:popIn 260ms cubic-bezier(.2,.9,.3,1)}
+    @keyframes popIn{
+      0%{transform: scale(.85);opacity:0}
+      100%{transform:scale(1);opacity:1}
+    }
+
+    /* animated glow for headings */
+    .glow{color:var(--neon1);text-shadow:0 0 10px rgba(0,246,255,0.08),0 0 30px rgba(0,246,255,0.06)}
+    
+    /* Highlight animation for headings */
+    .highlight {
+      position: relative;
+      display: inline-block;
+    }
+    .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--neon1), var(--neon2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+    .highlight:hover::after {
+      transform: scaleX(1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- particles -->
+  <div id="particles-js"></div>
+
+  <!-- header -->
+  <header>
+    <a class="logo" href="#home">Akshat<span style="color:var(--neon1)">.</span></a>
+    <nav>
+      <ul>
+        <li><a href="#home" class="highlight">Home</a></li>
+        <li><a href="#about" class="highlight">About / Resume</a></li>
+        <li><a href="#projects" class="highlight">Projects</a></li>
+        <li><a href="#contact" class="highlight">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- hero -->
+  <main id="home" class="hero">
+    <div class="hero-left">
+      <h1>Hello, I'm <span class="name">Akshat Mishra</span></h1>
+      <div style="height:10px"></div>
+      <div style="font-size:18px" class="glow">
+        <span id="typed"></span>
+      </div>
+      <p class="lead">A Full Stack Developer & AI/ML enthusiast from Kanpur. I build web apps, ML projects, and creative tools — with a futuristic UI vibe.</p>
+      <div class="cta">
+        <button class="btn primary" id="viewProjectsBtn">View Projects</button>
+        <button class="btn" id="openResumeBtn">Open Resume</button>
+        <a class="btn" href="https://instagram.com/bunny_its_77" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="avatar" id="avatar" data-tilt data-tilt-max="15" data-tilt-speed="500">
+        <!-- Replace with your image URL -->
+        <img src="https://i.imgur.com/your-image-id.jpg" alt="Akshat Mishra">
+      </div>
+    </div>
+  </main>
+
+  <!-- ABOUT / resume (includes docx content source) -->
+  <section id="about">
+    <div class="section-title highlight"><i class="fas fa-user-astronaut" style="color:var(--neon2)"></i> About & Resume</div>
+    <div class="about-grid">
+      <div class="glass resume-card">
+        <h3>Resume (Latest)</h3>
+        <div class="resume-meta">From: Kanpur • Email: akshatm833@gmail.com • Phone: +91 7618881545</div>
+
+        <!-- Resume text pulled from uploaded DOCX (source cited). -->
+        <div class="resume-text" id="resumeText">
+          <!-- We'll inject the resume content here (from uploaded file). -->
+          <!-- Source: uploaded resume document. --> 
+          <strong>Career Objective:</strong>
+          <p>To work as a Software Engineer and contribute effectively with my skills in development and machine learning.</p>
+
+          <strong>Professional Synopsis:</strong>
+          <p>Specialization: Web Development (HTML, CSS, JavaScript, React, Node.js), Artificial Intelligence & Machine Learning</p>
+          <p>Core Skills: Programming, Problem Solving, Project Development, Communication</p>
+
+          <strong>Projects & Training (Summary):</strong>
+          <ul>
+            <li>Typing Game – A multi-level typing challenge game with scoring system.</li>
+            <li>Chatbox – Interactive chat application integrated with APIs.</li>
+            <li>Login Pages & Forms – Secure validated UI/UX forms.</li>
+            <li>User Interface Designs – Responsive front-end interfaces.</li>
+            <li>Language Detection – Character n-grams + ML models.</li>
+            <li>Face Detection – OpenCV-based face recognition system.</li>
+            <li>Spam Mail Detection – NLP + ML classification.</li>
+            <li>Voice Command Recognition – Voice assistant responding to spoken commands.</li>
+            <li>E-Commerce Website – Full-stack e-commerce platform with payment integration.</li>
+            <li>Weather App – Real-time weather application with location detection.</li>
+            <li>Task Manager – Productivity app with drag-and-drop functionality.</li>
+            <li>Portfolio Website – Responsive portfolio with modern design.</li>
+          </ul>
+
+          <p style="font-size:13px;color:#9fb8d6;margin-top:12px">Resume source: uploaded file.</p>
+        </div>
+      </div>
+
+      <div class="glass">
+        <h3>Quick Stats</h3>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <div class="glass" style="flex:1;text-align:center;padding:16px">
+            <div style="font-size:20px;font-weight:700;color:var(--neon1)">10+</div>
+            <div style="font-size:13px;color:rgba(234,246,255,0.8)">Major Projects</div>
+          </div>
+          <div class="glass" style="flex:1;text-align:center;padding:16px">
+            <div style="font-size:20px;font-weight:700;color:var(--neon2)">AI/ML</div>
+            <div style="font-size:13px;color:rgba(234,246,255,0.8)">Focus Area</div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px">
+          <h4 style="margin:8px 0" class="glow">Projects Overview</h4>
+          <div class="projects-list">
+            <!-- We'll programmatically add major projects here (names + short). -->
+            <!-- These are the same projects as resume. -->
+            <div class="card project-card" data-idx="0">
+              <div class="title">Typing Game</div>
+              <div class="meta">Interactive typing challenge — multi-level, scores</div>
+              <div class="tags"><span class="tag">HTML</span><span class="tag">JS</span></div>
+              <div class="card-pop">
+                <div class="card-pop-title">Typing Game</div>
+                <div class="card-pop-desc">A multi-level typing challenge with increasing difficulty, scoring system, and leaderboard features.</div>
+                <div class="card-pop-tech">
+                  <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card project-card" data-idx="1">
+              <div class="title">Chat Application</div>
+              <div class="meta">Chat app with API integration</div>
+              <div class="tags"><span class="tag">React</span><span class="tag">Node.js</span></div>
+              <div class="card-pop">
+                <div class="card-pop-title">Chat Application</div>
+                <div class="card-pop-desc">Interactive chat application with real-time messaging, user authentication, and API integration.</div>
+                <div class="card-pop-tech">
+                  <span>React</span><span>Node.js</span><span>Socket.io</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card project-card" data-idx="2">
+              <div class="title">Face Detection System</div>
+              <div class="meta">OpenCV + ML face recognition</div>
+              <div class="tags"><span class="tag">Python</span><span class="tag">OpenCV</span></div>
+              <div class="card-pop">
+                <div class="card-pop-title">Face Detection System</div>
+                <div class="card-pop-desc">Real-time face detection and recognition system using OpenCV and machine learning algorithms.</div>
+                <div class="card-pop-tech">
+                  <span>Python</span><span>OpenCV</span><span>Machine Learning</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card project-card" data-idx="3">
+              <div class="title">Voice Command Recognition</div>
+              <div class="meta">Voice assistant using NLP & speech</div>
+              <div class="tags"><span class="tag">Python</span><span class="tag">NLP</span></div>
+              <div class="card-pop">
+                <div class="card-pop-title">Voice Command Recognition</div>
+                <div class="card-pop-desc">Voice assistant that recognizes spoken commands and performs actions using NLP and speech recognition.</div>
+                <div class="card-pop-tech">
+                  <span>Python</span><span>NLP</span><span>Speech Recognition</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS SECTION (larger grid with 3D style) -->
+  <section id="projects">
+    <div class="section-title highlight"><i class="fas fa-diagram-project" style="color:var(--neon1)"></i> Projects</div>
+    <div class="projects-grid" id="projectsGrid">
+      <!-- Cards will be clones of above but more visual -->
+      <!-- Card example -->
+      <div class="card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.4">
+        <div class="title">Typing Game</div>
+        <div class="meta">A multi-level typing challenge with scoring.</div>
+        <div class="tags"><span class="tag">HTML</span><span class="tag">JS</span></div>
+        <div class="card-pop">
+          <div class="card-pop-title">Typing Game</div>
+          <div class="card-pop-desc">A multi-level typing challenge with increasing difficulty, scoring system, and leaderboard features.</div>
+          <div class="card-pop-tech">
+            <span>HTML</span><span>CSS</span><span>JavaScript</span>
+          </div>
+        </div>
+      </div>
+      <div class="card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.4">
+        <div class="title">Chat Application</div>
+        <div class="meta">Interactive chat with API responses.</div>
+        <div class="tags"><span class="tag">React</span><span class="tag">Node.js</span></div>
+        <div class="card-pop">
+          <div class="card-pop-title">Chat Application</div>
+          <div class="card-pop-desc">Interactive chat application with real-time messaging, user authentication, and API integration.</div>
+          <div class="card-pop-tech">
+            <span>React</span><span>Node.js</span><span>Socket.io</span>
+          </div>
+        </div>
+      </div>
+      <div class="card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.4">
+        <div class="title">Face Detection System</div>
+        <div class="meta">Face recognition built with OpenCV.</div>
+        <div class="tags"><span class="tag">Python</span><span class="tag">ML</span></div>
+        <div class="card-pop">
+          <div class="card-pop-title">Face Detection System</div>
+          <div class="card-pop-desc">Real-time face detection and recognition system using OpenCV and machine learning algorithms.</div>
+          <div class="card-pop-tech">
+            <span>Python</span><span>OpenCV</span><span>Machine Learning</span>
+          </div>
+        </div>
+      </div>
+      <div class="card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.4">
+        <div class="title">Voice Command Recognition</div>
+        <div class="meta">Voice assistant responds to spoken commands.</div>
+        <div class="tags"><span class="tag">Python</span><span class="tag">NLP</span></div>
+        <div class="card-pop">
+          <div class="card-pop-title">Voice Command Recognition</div>
+          <div class="card-pop-desc">Voice assistant that recognizes spoken commands and performs actions using NLP and speech recognition.</div>
+          <div class="card-pop-tech">
+            <span>Python</span><span>NLP</span><span>Speech Recognition</span>
+          </div>
+        </div>
+      </div>
+      <!-- Additional projects -->
+      <div class="card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.4">
+        <div class="title">E-Commerce Website</div>
+        <div class="meta">Full-stack e-commerce with payment integration.</div>
+        <div class="tags"><span class="tag">MERN</span><span class="tag">Stripe</span></div>
+        <div class="card-pop">
+          <div class="card-pop-title">E-Commerce Website</div>
+          <div class="card-pop-desc">Full-featured e-commerce platform with product catalog, shopping cart, user authentication, and payment processing.</div>
+          <div class="card-pop-tech">
+            <span>MongoDB</span><span>Express</span><span>React</span><span>Node.js</span>
+          </div>
+        </div>
+      </div>
+      <div class="card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.4">
+        <div class="title">Weather App</div>
+        <div class="meta">Real-time weather with location detection.</div>
+        <div class="tags"><span class="tag">API</span><span class="tag">JavaScript</span></div>
+        <div class="card-pop">
+          <div class="card-pop-title">Weather App</div>
+          <div class="card-pop-desc">Real-time weather application with location detection, 5-day forecast, and interactive weather maps.</div>
+          <div class="card-pop-tech">
+            <span>JavaScript</span><span>API</span><span>HTML/CSS</span>
+          </div>
+        </div>
+      </div>
+      <div class="card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.4">
+        <div class="title">Task Manager</div>
+        <div class="meta">Productivity app with drag-and-drop.</div>
+        <div class="tags"><span class="tag">React</span><span class="tag">Firebase</span></div>
+        <div class="card-pop">
+          <div class="card-pop-title">Task Manager</div>
+          <div class="card-pop-desc">Productivity application with task management, drag-and-drop functionality, and real-time synchronization.</div>
+          <div class="card-pop-tech">
+            <span>React</span><span>Firebase</span><span>JavaScript</span>
+          </div>
+        </div>
+      </div>
+      <div class="card tilt-card" data-tilt data-tilt-glare data-tilt-max-glare="0.4">
+        <div class="title">Portfolio Website</div>
+        <div class="meta">Responsive portfolio with modern design.</div>
+        <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+        <div class="card-pop">
+          <div class="card-pop-title">Portfolio Website</div>
+          <div class="card-pop-desc">Responsive portfolio website with modern design, interactive elements, and smooth animations.</div>
+          <div class="card-pop-tech">
+            <span>HTML</span><span>CSS</span><span>JavaScript</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-title highlight"><i class="fas fa-envelope" style="color:var(--neon2)"></i> Contact</div>
+    <div class="contact-grid">
+      <div class="glass">
+        <h4>Get in touch</h4>
+        <p style="color:rgba(234,246,255,0.8)">Email: <strong>akshatm833@gmail.com</strong><br>Phone: <strong>+91 7618881545</strong></p>
+        <div style="height:12px"></div>
+        <form id="contactForm" class="contact-form">
+          <label style="font-size:13px;color:rgba(234,246,255,0.8)">Name</label>
+          <input name="from_name" required placeholder="Your name">
+          <label style="font-size:13px;color:rgba(234,246,255,0.8);margin-top:8px">Email</label>
+          <input name="from_email" type="email" required placeholder="Your email">
+          <label style="font-size:13px;color:rgba(234,246,255,0.8);margin-top:8px">Message</label>
+          <textarea name="message" required placeholder="Message..."></textarea>
+          <div style="margin-top:12px">
+            <button class="submit" type="submit">Send Message</button>
+          </div>
+        </form>
+        <p style="margin-top:12px;font-size:13px;color:#9fb8d6">Note: contact form uses EmailJS. See comments in code for setup (replace service/template/user IDs).</p>
+      </div>
+
+      <div class="glass">
+        <h4>Socials</h4>
+        <p>Instagram: <a style="color:var(--neon1)" href="https://instagram.com/bunny_its_77" target="_blank">@bunny_its_77</a></p>
+        <div style="margin-top:8px">
+          <a class="btn" href="#projects">Explore Projects</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer style="padding:40px 6%;text-align:center;background:linear-gradient(180deg,transparent,#020416)">
+    <div style="opacity:0.7">© 2025 Akshat Mishra — Built with ♥</div>
+  </footer>
+
+  <!-- floating preview -->
+  <div id="preview" class="preview-pop">Preview</div>
+
+  <!-- modal overlay (for resume / project details) -->
+  <div id="overlay" class="overlay">
+    <div id="modal" class="modal anim-pop">
+      <div class="modal-left" id="modalLeft">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <h3 id="modalTitle" class="glow">Detail</h3>
+          <div class="close" id="closeModal"><i class="fas fa-times"></i></div>
+        </div>
+        <div id="modalBody" style="margin-top:12px;color:rgba(234,246,255,0.92);line-height:1.5"></div>
+      </div>
+      <div class="modal-right">
+        <h4>Quick Info</h4>
+        <div id="modalMeta" style="font-size:13px;color:rgba(234,246,255,0.8)"></div>
+        <div style="height:18px"></div>
+        <a id="modalAction" class="btn" style="display:inline-block">Open</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ===========================
+   Initialize particles.js
+   =========================== */
+particlesJS('particles-js', {
+  "particles": {
+    "number": { "value": 70, "density": {"enable": true, "value_area": 800} },
+    "color": { "value": ["#00f6ff","#6c63ff","#66f"] },
+    "shape": { "type": "circle" },
+    "opacity": { "value": 0.6 },
+    "size": { "value": 2.6 },
+    "line_linked": { "enable": true, "distance": 160, "color": "#066", "opacity": 0.08, "width": 1 },
+    "move": { "enable": true, "speed": 1.6 }
+  },
+  "interactivity": {
+    "events": { "onhover": {"enable": true, "mode": "repulse"}, "onclick": {"enable": true, "mode": "push"} },
+    "modes": { "repulse": {"distance":120} }
+  },
+  "retina_detect": true
+});
+
+/* ===========================
+   Typed.js for role line
+   =========================== */
+new Typed('#typed', {
+  strings: ["Full Stack Developer", "AI / ML Enthusiast", "Open to internships & projects"],
+  typeSpeed: 60,
+  backSpeed: 35,
+  backDelay: 1400,
+  loop: true
+});
+
+/* ===========================
+   Vanilla Tilt for cards/avatar
+   =========================== */
+VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
+  max: 18, speed: 700, glare: true, "max-glare": 0.25
+});
+
+/* ===========================
+   Project hover preview + popup on left click
+   =========================== */
+const preview = document.getElementById('preview');
+const modal = document.getElementById('overlay');
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+const modalMeta = document.getElementById('modalMeta');
+const modalAction = document.getElementById('modalAction');
+const closeModal = document.getElementById('closeModal');
+
+const projects = [
+  {
+    id:0, title:"Typing Game", meta:"Multi-level typing challenge with scoring and levels", tags:["HTML","CSS","JS"], detail:"Built a multi-level typing challenge. Difficulty increases, scoring and leaderboard features, responsive design."
+  },
+  {
+    id:1, title:"Chat Application", meta:"Interactive chat app integrated with APIs", tags:["React","Node.js","API"], detail:"A chat application with API-backed dynamic responses to mimic conversational agents."
+  },
+  {
+    id:2, title:"Face Detection System", meta:"OpenCV-based face recognition", tags:["Python","OpenCV","ML"], detail:"Face detection and recognition using OpenCV and ML models for accuracy and speed."
+  },
+  {
+    id:3, title:"Voice Command Recognition", meta:"Voice assistant using speech & NLP", tags:["Python","NLP","Speech"], detail:"Assistant that recognizes voice commands and triggers actions; uses speech-to-text and NLP models."
+  },
+  {
+    id:4, title:"E-Commerce Website", meta:"Full-stack e-commerce with payment integration", tags:["MERN","Stripe","MongoDB"], detail:"Complete e-commerce solution with product management, shopping cart, user authentication, and payment processing."
+  },
+  {
+    id:5, title:"Weather App", meta:"Real-time weather with location detection", tags:["API","JavaScript","HTML/CSS"], detail:"Weather application with real-time data, location detection, and interactive forecast displays."
+  },
+  {
+    id:6, title:"Task Manager", meta:"Productivity app with drag-and-drop", tags:["React","Firebase","JavaScript"], detail:"Task management application with drag-and-drop functionality and real-time synchronization."
+  },
+  {
+    id:7, title:"Portfolio Website", meta:"Responsive portfolio with modern design", tags:["HTML","CSS","JavaScript"], detail:"Modern portfolio website with responsive design and interactive elements."
+  }
+];
+
+// show preview on hover near cursor
+document.querySelectorAll('.card').forEach((el, idx) => {
+  el.addEventListener('mousemove', (e)=>{
+    preview.style.left = e.pageX + 'px';
+    preview.style.top = e.pageY + 'px';
+    preview.style.display = 'block';
+    preview.innerText = el.querySelector('.title')?.innerText || 'Project';
+  });
+  el.addEventListener('mouseleave', ()=> preview.style.display='none');
+
+  // left click open modal with animated pop & white-blue background feel
+  el.addEventListener('click', (ev)=>{
+    ev.preventDefault();
+    const i = idx % projects.length;
+    const p = projects[i];
+    modalTitle.innerText = p.title;
+    modalBody.innerHTML = `<p style="font-size:15px">${p.detail}</p><p style="margin-top:12px;font-size:13px;color:#9fb8d6">Technologies: ${p.tags.join(', ')}</p>`;
+    modalMeta.innerHTML = `<strong>${p.meta}</strong><br>Projects: ${p.title}`;
+    modalAction.onclick = ()=> { window.open('#projects','_self') };
+    // style modal with white & blue-ish glow background when visible
+    const modalEl = document.getElementById('modal');
+    modalEl.style.background = "linear-gradient(90deg, rgba(255,255,255,0.04), rgba(0,246,255,0.02))";
+    modalEl.style.border = "1px solid rgba(0,246,255,0.12)";
+    modal.classList.add('active');
+    document.getElementById('modal').classList.add('anim-pop');
+  });
+});
+
+// close modal
+closeModal.addEventListener('click', ()=> modal.classList.remove('active'));
+
+// close modal on mouseleave from modal area (as requested)
+document.getElementById('modal').addEventListener('mouseleave', ()=>{
+  // only close if overlay is active
+  if(modal.classList.contains('active')) modal.classList.remove('active');
+});
+
+/* ===========================
+   Open resume button behavior:
+   left click opens modal with resume; mouseleave closes it (pop-pop)
+   =========================== */
+document.getElementById('openResumeBtn').addEventListener('click', ()=>{
+  modalTitle.innerText = "Resume — Akshat Mishra";
+  modalBody.innerHTML = document.getElementById('resumeText').innerHTML;
+  modalMeta.innerHTML = `<strong>From: Kanpur</strong><br>Email: akshatm833@gmail.com`;
+  modal.classList.add('active');
+});
+
+/* ===========================
+   Smooth scroll for 'view projects' btn
+   =========================== */
+document.getElementById('viewProjectsBtn').addEventListener('click', ()=>{
+  document.getElementById('projects').scrollIntoView({behavior:'smooth'});
+});
+
+/* ===========================
+   Contact form via EmailJS
+   ===========================
+   SETUP (do this once):
+   1) Go to https://www.emailjs.com/ and create an account.
+   2) Add an email service (e.g., Gmail) in EmailJS dashboard.
+   3) Create an email template with fields: from_name, from_email, message
+   4) Note these values: SERVICE_ID, TEMPLATE_ID, USER_ID (public key)
+   5) Replace the placeholders below with your actual IDs.
+   =========================== */
+
+(function(){
+  // initialize emailjs - replace 'YOUR_USER_ID' below with your EmailJS user/public key
+  emailjs.init('YOUR_USER_ID'); // <-- REPLACE with your EmailJS user id (public key)
+})();
+
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  // NOTE: replace 'service_xxx' and 'template_xxx' with your EmailJS service and template IDs
+  const serviceID = 'service_xxx';
+  const templateID = 'template_xxx';
+
+  // send form
+  emailjs.sendForm(serviceID, templateID, this)
+    .then(() => {
+      alert('Message sent — I will reply soon. Thank you!');
+      this.reset();
+    }, (err) => {
+      console.error('EmailJS error:', err);
+      alert('Could not send message automatically. Please email me at akshatm833@gmail.com');
+    });
+});
+
+/* ===========================
+   Small accessibility: ESC closes modal
+   =========================== */
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape') modal.classList.remove('active');
+});
+
+/* ===========================
+   Extra: small entrance animation for project cards
+   =========================== */
+window.addEventListener('load', ()=>{
+  document.querySelectorAll('.card').forEach((c,i)=>{
+    setTimeout(()=> c.style.transform += " translateZ(0) ", 80*i);
+  });
+});
+</script>
+
+</body>
+</html>
